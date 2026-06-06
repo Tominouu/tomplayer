@@ -1,6 +1,8 @@
 package com.tomplayer.app.ui.settings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -101,32 +103,22 @@ fun SettingsScreen(
             )
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedTextField(
+            TvTextField(
                 value = urlInput,
                 onValueChange = { urlInput = it },
-                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
-                placeholder = { Text("URL de la playlist M3U…") },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = NetflixDarkGrey,
-                    unfocusedContainerColor = NetflixGrey,
-                    focusedTextColor = NetflixWhite,
-                    unfocusedTextColor = NetflixWhite80
-                )
+                modifier = Modifier.fillMaxWidth(),
+                onFocusChange = { isTextFieldFocused = it },
+                placeholder = "URL de la playlist M3U…"
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            OutlinedTextField(
+            TvTextField(
                 value = playlistNameInput,
                 onValueChange = { playlistNameInput = it },
-                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
-                placeholder = { Text("Nom (optionnel)…") },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = NetflixDarkGrey,
-                    unfocusedContainerColor = NetflixGrey,
-                    focusedTextColor = NetflixWhite,
-                    unfocusedTextColor = NetflixWhite80
-                )
+                modifier = Modifier.fillMaxWidth(),
+                onFocusChange = { isTextFieldFocused = it },
+                placeholder = "Nom (optionnel)…"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -156,17 +148,12 @@ fun SettingsScreen(
             )
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedTextField(
+            TvTextField(
                 value = xtreamServerUrl,
                 onValueChange = { xtreamServerUrl = it },
-                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
-                placeholder = { Text("URL du serveur…") },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = NetflixDarkGrey,
-                    unfocusedContainerColor = NetflixGrey,
-                    focusedTextColor = NetflixWhite,
-                    unfocusedTextColor = NetflixWhite80
-                )
+                modifier = Modifier.fillMaxWidth(),
+                onFocusChange = { isTextFieldFocused = it },
+                placeholder = "URL du serveur…"
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -175,29 +162,19 @@ fun SettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                OutlinedTextField(
+                TvTextField(
                     value = xtreamUsername,
                     onValueChange = { xtreamUsername = it },
-                    modifier = Modifier.weight(1f).onFocusChanged { isTextFieldFocused = it.isFocused },
-                    placeholder = { Text("Utilisateur…") },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = NetflixDarkGrey,
-                        unfocusedContainerColor = NetflixGrey,
-                        focusedTextColor = NetflixWhite,
-                        unfocusedTextColor = NetflixWhite80
-                    )
+                    modifier = Modifier.weight(1f),
+                    onFocusChange = { isTextFieldFocused = it },
+                    placeholder = "Utilisateur…"
                 )
-                OutlinedTextField(
+                TvTextField(
                     value = xtreamPassword,
                     onValueChange = { xtreamPassword = it },
-                    modifier = Modifier.weight(1f).onFocusChanged { isTextFieldFocused = it.isFocused },
-                    placeholder = { Text("Mot de passe…") },
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = NetflixDarkGrey,
-                        unfocusedContainerColor = NetflixGrey,
-                        focusedTextColor = NetflixWhite,
-                        unfocusedTextColor = NetflixWhite80
-                    )
+                    modifier = Modifier.weight(1f),
+                    onFocusChange = { isTextFieldFocused = it },
+                    placeholder = "Mot de passe…"
                 )
             }
 
@@ -224,17 +201,12 @@ fun SettingsScreen(
             )
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedTextField(
+            TvTextField(
                 value = epgInput,
                 onValueChange = { epgInput = it },
-                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
-                placeholder = { Text("URL du guide TV (XMLTV)…") },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = NetflixDarkGrey,
-                    unfocusedContainerColor = NetflixGrey,
-                    focusedTextColor = NetflixWhite,
-                    unfocusedTextColor = NetflixWhite80
-                )
+                modifier = Modifier.fillMaxWidth(),
+                onFocusChange = { isTextFieldFocused = it },
+                placeholder = "URL du guide TV (XMLTV)…"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -315,5 +287,42 @@ fun SettingsScreen(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun TvTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: String = "",
+    onFocusChange: ((Boolean) -> Unit)? = null
+) {
+    var isActivated by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .onFocusChanged { onFocusChange?.invoke(it.isFocused) }
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { isActivated = true }
+    ) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier.fillMaxWidth().onFocusChanged {
+                if (!it.isFocused) isActivated = false
+            },
+            readOnly = !isActivated,
+            singleLine = true,
+            placeholder = { Text(placeholder) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = NetflixDarkGrey,
+                unfocusedContainerColor = NetflixGrey,
+                focusedTextColor = NetflixWhite,
+                unfocusedTextColor = NetflixWhite80
+            )
+        )
     }
 }
