@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TomPlayer</string>
+    <string name="home">Accueil</string>
+    <string name="channels">Chaînes</string>
+    <string name="guide">Guide TV</string>
+    <string name="search">Rechercher</string>
+    <string name="settings">Paramètres</string>
+    <string name="favorites">Favoris</string>
+    <string name="history">Historique</string>
+    <string name="playlists">Playlists</string>
+    <string name="add_playlist">Ajouter une playlist</string>
+    <string name="playlist_url">URL de la playlist</string>
+    <string name="playlist_file">Fichier playlist</string>
+    <string name="xtream_codes">Xtream Codes</string>
+    <string name="no_channels">Aucune chaîne trouvée</string>
+    <string name="loading">Chargement…</string>
+    <string name="error_loading">Erreur de chargement</string>
+    <string name="retry">Réessayer</string>
+    <string name="now">En cours</string>
+    <string name="next">Suivant</string>
+    <string name="no_info">Aucune information</string>
+    <string name="channel_switch">Changer de chaîne</string>
+</resources>

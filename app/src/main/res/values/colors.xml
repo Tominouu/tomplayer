@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tomplayer_primary">#E50914</color>
+    <color name="tomplayer_on_primary">#FFFFFF</color>
+    <color name="tomplayer_background">#0F0F0F</color>
+    <color name="tomplayer_surface">#1A1A1A</color>
+    <color name="tomplayer_on_surface">#FFFFFF</color>
+    <color name="tomplayer_on_surface_secondary">#B3B3B3</color>
+    <color name="tomplayer_focus">#FFFFFF</color>
+    <color name="tomplayer_focus_background">#E50914</color>
+    <color name="ic_launcher_background">#0F0F0F</color>
+</resources>
