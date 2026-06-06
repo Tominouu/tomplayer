@@ -27,8 +27,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.activity.compose.BackHandler
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,6 +60,18 @@ fun SettingsScreen(
     var xtreamUsername by remember { mutableStateOf("") }
     var xtreamPassword by remember { mutableStateOf("") }
     var epgInput by remember { mutableStateOf(epgUrl) }
+
+    var isTextFieldFocused by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+
+    BackHandler {
+        if (isTextFieldFocused) {
+            focusManager.clearFocus()
+            isTextFieldFocused = false
+        } else {
+            onNavigateBack()
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -89,7 +104,7 @@ fun SettingsScreen(
             OutlinedTextField(
                 value = urlInput,
                 onValueChange = { urlInput = it },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
                 placeholder = { Text("URL de la playlist M3U…") },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = NetflixDarkGrey,
@@ -104,7 +119,7 @@ fun SettingsScreen(
             OutlinedTextField(
                 value = playlistNameInput,
                 onValueChange = { playlistNameInput = it },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
                 placeholder = { Text("Nom (optionnel)…") },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = NetflixDarkGrey,
@@ -144,7 +159,7 @@ fun SettingsScreen(
             OutlinedTextField(
                 value = xtreamServerUrl,
                 onValueChange = { xtreamServerUrl = it },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
                 placeholder = { Text("URL du serveur…") },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = NetflixDarkGrey,
@@ -163,7 +178,7 @@ fun SettingsScreen(
                 OutlinedTextField(
                     value = xtreamUsername,
                     onValueChange = { xtreamUsername = it },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).onFocusChanged { isTextFieldFocused = it.isFocused },
                     placeholder = { Text("Utilisateur…") },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = NetflixDarkGrey,
@@ -175,7 +190,7 @@ fun SettingsScreen(
                 OutlinedTextField(
                     value = xtreamPassword,
                     onValueChange = { xtreamPassword = it },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.weight(1f).onFocusChanged { isTextFieldFocused = it.isFocused },
                     placeholder = { Text("Mot de passe…") },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedContainerColor = NetflixDarkGrey,
@@ -212,7 +227,7 @@ fun SettingsScreen(
             OutlinedTextField(
                 value = epgInput,
                 onValueChange = { epgInput = it },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().onFocusChanged { isTextFieldFocused = it.isFocused },
                 placeholder = { Text("URL du guide TV (XMLTV)…") },
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = NetflixDarkGrey,
